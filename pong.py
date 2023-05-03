@@ -18,8 +18,8 @@ class Ball:
         self.radius = radius
         self.farge = farge
         self.fart = fart
-        self.xfart = random.randint(4, 8)
-        self.yfart = random.randint(4, 8)
+        self.xfart = random.randint(4,6)
+        self.yfart = random.randint(4,6)
 
     def tegn(self):
         pg.draw.circle(vindu, self.farge, (self.x, self.y), self.radius)
@@ -39,18 +39,18 @@ class Ball:
             self.y = VINDU_HOYDE - self.radius
 
         # Sjekker kollisjon med rektangler
-        if self.x - self.radius <= rektangel.x + rektangel.bredde:
+        if self.x - self.radius <= rektangel.x + rektangel.bredde and self.y < rektangel.y + rektangel.hoyde and self.y > rektangel.y:
             self.xfart = -self.xfart
-        elif self.x + self.radius >= rektangel2.x + rektangel2.bredde:
+        elif self.x - self.radius >= rektangel2.x - rektangel2.bredde and self.y < rektangel2.y + rektangel2.hoyde and self.y > rektangel2.y:
             self.xfart = -self.xfart
+    
         self.x += self.xfart
         self.y += self.yfart
 
+    
 
-       
 
 class Rektangel:
-
     def __init__(self, farge, x, y, bredde, hoyde):
         self.farge = farge
         self.x = x
@@ -72,10 +72,7 @@ class Rektangel:
             self.y = 1
         elif (self.y + self.hoyde >= VINDU_HOYDE):
             self.y = VINDU_HOYDE - self.hoyde
-    
-   
-   
-        
+           
         
 fortsett = True
 ball = Ball(150, 150, 10, (250, 250, 250), 5)
@@ -102,14 +99,16 @@ while fortsett:
 
     trykkede_taster = pg.key.get_pressed()
     if trykkede_taster[K_UP]:
-        rektangel2.y -= 5
+        rektangel2.y -= 10
     elif trykkede_taster[K_DOWN]:
-        rektangel2.y += 5
+        rektangel2.y += 10
     
     if trykkede_taster[K_w]:
-        rektangel.y -=5
+        rektangel.y -= 10
     elif trykkede_taster[K_s]:
-        rektangel.y += 5
+        rektangel.y += 10
+    
+    
     
 
         
