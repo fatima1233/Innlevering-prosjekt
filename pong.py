@@ -1,6 +1,7 @@
 import pygame as pg
 import random
 from pygame.locals import (K_UP, K_DOWN, K_w, K_s)
+import sys
 
 
 VINDU_BREDDE = 600
@@ -10,6 +11,7 @@ clock = pg.time.Clock()
 
 poeng1 = 0
 poeng2 = 0
+
 
 class Ball:
     def __init__(self, x, y, radius, farge, fart):
@@ -26,7 +28,7 @@ class Ball:
 
     def flytt(self, rektangel, rektangel2):
         if (self.x - self.radius <= 0):
-            self.xfart = -self.xfart
+            self.xfart = -self.xfart 
             self.x = self.radius
         elif (self.x + self.radius >= VINDU_BREDDE):
             self.xfart = -self.xfart
@@ -37,6 +39,8 @@ class Ball:
         elif (self.y + self.radius >= VINDU_HOYDE):
             self.yfart = -self.yfart
             self.y = VINDU_HOYDE - self.radius
+        
+        
 
         # Sjekker kollisjon med rektangler
         if self.x - self.radius <= rektangel.x + rektangel.bredde and self.y < rektangel.y + rektangel.hoyde and self.y > rektangel.y:
@@ -46,8 +50,7 @@ class Ball:
     
         self.x += self.xfart
         self.y += self.yfart
-
-    
+  
 
 
 class Rektangel:
@@ -84,7 +87,8 @@ rektangel2 = Rektangel((250, 250, 250), 570, 150, 15, 100)
 while fortsett:
     for event in pg.event.get():
         if event.type == pg.QUIT:
-            fortsett = False
+            fortsett = False   
+            
     vindu.fill((0, 0, 0))
     pg.draw.line(vindu, (250, 250, 250), [300, 0], [300, 400], 5)
     ball.tegn()
@@ -93,7 +97,6 @@ while fortsett:
     rektangel2.tegn()
     rektangel.sjekk_vegg()
     rektangel2.sjekk_vegg()
-
     
     
 
@@ -107,12 +110,6 @@ while fortsett:
         rektangel.y -= 10
     elif trykkede_taster[K_s]:
         rektangel.y += 10
-    
-    
-    
-
-        
-        
     
 
     
