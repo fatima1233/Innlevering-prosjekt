@@ -1,7 +1,7 @@
 import pygame as pg
 import random
 from pygame.locals import (K_UP, K_DOWN, K_w, K_s)
-import sys
+
 
 
 VINDU_BREDDE = 600
@@ -9,8 +9,8 @@ VINDU_HOYDE = 400
 vindu = pg.display.set_mode([VINDU_BREDDE, VINDU_HOYDE])
 clock = pg.time.Clock()
 
-poeng1 = 0
-poeng2 = 0
+
+
 
 
 class Ball:
@@ -28,7 +28,7 @@ class Ball:
 
     def flytt(self, rektangel, rektangel2):
         if (self.x - self.radius <= 0):
-            self.xfart = -self.xfart 
+            self.xfart = -self.xfart
             self.x = self.radius
         elif (self.x + self.radius >= VINDU_BREDDE):
             self.xfart = -self.xfart
@@ -47,10 +47,16 @@ class Ball:
             self.xfart = -self.xfart
         elif self.x - self.radius >= rektangel2.x - rektangel2.bredde and self.y < rektangel2.y + rektangel2.hoyde and self.y > rektangel2.y:
             self.xfart = -self.xfart
+
+        #Sjekker kollisjon med vegg
+        if self.x -self.radius <= VINDU_BREDDE and self.x + self.radius >= VINDU_BREDDE:
+            return False
+            
     
         self.x += self.xfart
         self.y += self.yfart
-  
+
+        
 
 
 class Rektangel:
@@ -75,11 +81,14 @@ class Rektangel:
             self.y = 1
         elif (self.y + self.hoyde >= VINDU_HOYDE):
             self.y = VINDU_HOYDE - self.hoyde
+        
+#class Poeng:
+
            
         
 fortsett = True
 ball = Ball(150, 150, 10, (250, 250, 250), 5)
-rektangel = Rektangel((250, 250, 250), 15, 150, 15, 100)
+rektangel = Rektangel((250, 250, 250), 10, 150, 15, 100)
 rektangel2 = Rektangel((250, 250, 250), 570, 150, 15, 100)
 
 
@@ -97,6 +106,9 @@ while fortsett:
     rektangel2.tegn()
     rektangel.sjekk_vegg()
     rektangel2.sjekk_vegg()
+
+    if ball.x - ball.radius <= 0 or ball.x + ball.radius >= VINDU_BREDDE:
+            fortsett = False
     
     
 
