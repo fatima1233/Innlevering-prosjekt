@@ -1,7 +1,8 @@
 import pygame as pg
 import random
 from pygame.locals import (K_UP, K_DOWN, K_w, K_s)
-
+#Liten feil i koden som var veldig vanskelig å fikse, jeg prøvde alt, men jeg vet ikke om den er fikset nå (ballen henger seg på rektanglene
+# noen ganger, som igjen ødelegger poengene)
 
 
 VINDU_BREDDE = 600
@@ -19,8 +20,8 @@ class Ball:
         self.radius = radius
         self.farge = farge
         self.fart = fart
-        self.xfart = random.randint(4,6)
-        self.yfart = random.randint(4,6)
+        self.xfart = random.randint(4,5)
+        self.yfart = random.randint(4,5)
       
        
 
@@ -44,8 +45,6 @@ class Ball:
             self.y = VINDU_HOYDE - self.radius
 
         
-       
-
         # Sjekker kollisjon med rektangler
         if self.x - self.radius <= rektangel.x + rektangel.bredde and self.y < rektangel.y + rektangel.hoyde and self.y > rektangel.y:
             self.xfart = -self.xfart
@@ -54,11 +53,26 @@ class Ball:
             self.xfart = -self.xfart
             Ball.spiller2 += 1
 
-    
+#Et forsøk på å få ballen til å ikke henge seg på rektanglene
+
+        if self.y - self.radius <= rektangel.y + rektangel.hoyde and self.x > rektangel.x and self.x < rektangel.x + rektangel.bredde:
+            self.yfart = -self.yfart
+            self.y = rektangel.y + rektangel.hoyde + self.radius
+        elif self.y + self.radius >= rektangel.y and self.x > rektangel.x and self.x < rektangel.x + rektangel.bredde:
+            self.yfart = -self.yfart
+            self.y = rektangel.y - self.radius
+        if self.y - self.radius <= rektangel2.y - rektangel2.hoyde and self.x > rektangel2.x and self.x < rektangel2.x + rektangel2.bredde:
+            self.yfart = -self.yfart
+            self.y = rektangel2.y + rektangel2.hoyde + self.radius
+        elif self.y + self.radius >= rektangel2.y and self.x > rektangel2.x and self.x < rektangel2.x + rektangel2.bredde:
+            self.yfart = -self.yfart
+            self.y = rektangel2.y - self.radius
+
         self.x += self.xfart
         self.y += self.yfart
 
-
+      
+        
 
 class Rektangel:
     def __init__(self, farge, x, y, bredde, hoyde):
@@ -87,11 +101,9 @@ class Rektangel:
 
         
 fortsett = True
-ball = Ball(150, 150, 10, (250, 250, 250), 5)
-rektangel = Rektangel((250, 250, 250), 10, 150, 15, 100)
-rektangel2 = Rektangel((250, 250, 250), 570, 150, 15, 100)
-
-
+ball = Ball(300, 200, 10, (250, 250, 250), 5)
+rektangel = Rektangel((250, 250, 250), 10, 150, 10, 100)
+rektangel2 = Rektangel((250, 250, 250), 580, 150, 10, 100)
 
 
 
@@ -119,16 +131,13 @@ while fortsett:
             print("Spiller 1 poeng: ", Ball.spiller1)
             print("Spiller 2 poeng: ", Ball.spiller2)
     
-            if Ball.spiller1 > Ball.spiller2:
-                print("Spiller 1 vant!")
-            elif Ball.spiller2 < Ball.spiller1:
-                print("Spiller 2 vant!")
-
+           
     #Skriver poeng på skjermen
     spiller_skrift = skrift.render(f"{Ball.spiller1}", False, (250, 250, 250))
     vindu.blit(spiller_skrift,(130, 10))
     spiller2_skrift = skrift.render(f"{Ball.spiller2}", False, (250, 250, 250))
     vindu.blit(spiller2_skrift, (450, 10))
+
 
     
     trykkede_taster = pg.key.get_pressed()
