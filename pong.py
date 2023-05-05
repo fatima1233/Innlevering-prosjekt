@@ -10,10 +10,9 @@ vindu = pg.display.set_mode([VINDU_BREDDE, VINDU_HOYDE])
 clock = pg.time.Clock()
 
 
-
-
-
 class Ball:
+    spiller1 = 0
+    spiller2 = 0
     def __init__(self, x, y, radius, farge, fart):
         self.x = x
         self.y = y
@@ -22,9 +21,13 @@ class Ball:
         self.fart = fart
         self.xfart = random.randint(4,6)
         self.yfart = random.randint(4,6)
+      
+       
 
     def tegn(self):
         pg.draw.circle(vindu, self.farge, (self.x, self.y), self.radius)
+    
+
 
     def flytt(self, rektangel, rektangel2):
         if (self.x - self.radius <= 0):
@@ -39,24 +42,22 @@ class Ball:
         elif (self.y + self.radius >= VINDU_HOYDE):
             self.yfart = -self.yfart
             self.y = VINDU_HOYDE - self.radius
+
         
-        
+       
 
         # Sjekker kollisjon med rektangler
         if self.x - self.radius <= rektangel.x + rektangel.bredde and self.y < rektangel.y + rektangel.hoyde and self.y > rektangel.y:
             self.xfart = -self.xfart
+            Ball.spiller2 += 1
         elif self.x - self.radius >= rektangel2.x - rektangel2.bredde and self.y < rektangel2.y + rektangel2.hoyde and self.y > rektangel2.y:
             self.xfart = -self.xfart
+            Ball.spiller1 += 1
 
-        #Sjekker kollisjon med vegg
-        if self.x -self.radius <= VINDU_BREDDE and self.x + self.radius >= VINDU_BREDDE:
-            return False
-            
     
         self.x += self.xfart
         self.y += self.yfart
 
-        
 
 
 class Rektangel:
@@ -81,10 +82,9 @@ class Rektangel:
             self.y = 1
         elif (self.y + self.hoyde >= VINDU_HOYDE):
             self.y = VINDU_HOYDE - self.hoyde
-        
-#class Poeng:
 
-           
+
+
         
 fortsett = True
 ball = Ball(150, 150, 10, (250, 250, 250), 5)
@@ -93,10 +93,13 @@ rektangel2 = Rektangel((250, 250, 250), 570, 150, 15, 100)
 
 
 
+
+
 while fortsett:
     for event in pg.event.get():
         if event.type == pg.QUIT:
-            fortsett = False   
+            fortsett = False 
+
             
     vindu.fill((0, 0, 0))
     pg.draw.line(vindu, (250, 250, 250), [300, 0], [300, 400], 5)
@@ -106,11 +109,19 @@ while fortsett:
     rektangel2.tegn()
     rektangel.sjekk_vegg()
     rektangel2.sjekk_vegg()
+    
+    
 
+    #Sjekker kollisjon med vegg
     if ball.x - ball.radius <= 0 or ball.x + ball.radius >= VINDU_BREDDE:
             fortsett = False
+            print("Spiller 1 poeng: ", Ball.spiller2)
+            print("Spiller 2 poeng: ", Ball.spiller1)
     
     
+
+
+
 
     trykkede_taster = pg.key.get_pressed()
     if trykkede_taster[K_UP]:
