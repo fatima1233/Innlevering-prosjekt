@@ -53,21 +53,6 @@ class Ball:
             self.xfart = -self.xfart
             Ball.spiller2 += 1
 
-#Et forsøk på å få ballen til å ikke henge seg på rektanglene
-
-        if self.y - self.radius <= rektangel.y + rektangel.hoyde and self.x > rektangel.x and self.x < rektangel.x + rektangel.bredde:
-            self.yfart = -self.yfart
-            self.y = rektangel.y + rektangel.hoyde + self.radius
-        elif self.y + self.radius >= rektangel.y and self.x > rektangel.x and self.x < rektangel.x + rektangel.bredde:
-            self.yfart = -self.yfart
-            self.y = rektangel.y - self.radius
-        if self.y - self.radius <= rektangel2.y - rektangel2.hoyde and self.x > rektangel2.x and self.x < rektangel2.x + rektangel2.bredde:
-            self.yfart = -self.yfart
-            self.y = rektangel2.y + rektangel2.hoyde + self.radius
-        elif self.y + self.radius >= rektangel2.y and self.x > rektangel2.x and self.x < rektangel2.x + rektangel2.bredde:
-            self.yfart = -self.yfart
-            self.y = rektangel2.y - self.radius
-
         self.x += self.xfart
         self.y += self.yfart
 
