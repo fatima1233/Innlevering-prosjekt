@@ -8,7 +8,7 @@ VINDU_BREDDE = 600
 VINDU_HOYDE = 400
 vindu = pg.display.set_mode([VINDU_BREDDE, VINDU_HOYDE])
 clock = pg.time.Clock()
-
+pg.font.init()
 
 class Ball:
     spiller1 = 0
@@ -49,10 +49,10 @@ class Ball:
         # Sjekker kollisjon med rektangler
         if self.x - self.radius <= rektangel.x + rektangel.bredde and self.y < rektangel.y + rektangel.hoyde and self.y > rektangel.y:
             self.xfart = -self.xfart
-            Ball.spiller2 += 1
+            Ball.spiller1 += 1
         elif self.x - self.radius >= rektangel2.x - rektangel2.bredde and self.y < rektangel2.y + rektangel2.hoyde and self.y > rektangel2.y:
             self.xfart = -self.xfart
-            Ball.spiller1 += 1
+            Ball.spiller2 += 1
 
     
         self.x += self.xfart
@@ -102,6 +102,7 @@ while fortsett:
 
             
     vindu.fill((0, 0, 0))
+    skrift = pg.font.Font(None, 50)
     pg.draw.line(vindu, (250, 250, 250), [300, 0], [300, 400], 5)
     ball.tegn()
     ball.flytt(rektangel, rektangel2)
@@ -115,14 +116,21 @@ while fortsett:
     #Sjekker kollisjon med vegg
     if ball.x - ball.radius <= 0 or ball.x + ball.radius >= VINDU_BREDDE:
             fortsett = False
-            print("Spiller 1 poeng: ", Ball.spiller2)
-            print("Spiller 2 poeng: ", Ball.spiller1)
+            print("Spiller 1 poeng: ", Ball.spiller1)
+            print("Spiller 2 poeng: ", Ball.spiller2)
     
+            if Ball.spiller1 > Ball.spiller2:
+                print("Spiller 1 vant!")
+            elif Ball.spiller2 < Ball.spiller1:
+                print("Spiller 2 vant!")
+
+    #Skriver poeng på skjermen
+    spiller_skrift = skrift.render(f"{Ball.spiller1}", False, (250, 250, 250))
+    vindu.blit(spiller_skrift,(130, 10))
+    spiller2_skrift = skrift.render(f"{Ball.spiller2}", False, (250, 250, 250))
+    vindu.blit(spiller2_skrift, (450, 10))
+
     
-
-
-
-
     trykkede_taster = pg.key.get_pressed()
     if trykkede_taster[K_UP]:
         rektangel2.y -= 10
